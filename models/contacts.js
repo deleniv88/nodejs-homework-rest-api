@@ -15,11 +15,11 @@ const schema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-}, {
+},{
   versionKey: false
 })
 
-const Contact = mongoose.model("contacts", schema);
+const Contact = mongoose.model("contacts", schema)
 
 const listContacts = async () => {
   try {
@@ -37,7 +37,6 @@ const getContactById = async (contactId) => {
   } catch (error) {
     console.error(error);
   }
-
 }
 
 const removeContact = async (contactId) => {
@@ -51,10 +50,10 @@ const removeContact = async (contactId) => {
 
 const addContact = async (body) => {
   try {
-    const contact = await Contact.create({
-      ...body,
-    })
-    return contact
+      const contact = await Contact.create({
+        ...body,
+      })
+      return contact
 
   } catch (error) {
     console.error(error);
@@ -64,7 +63,7 @@ const addContact = async (body) => {
 const updateContact = async (contactId, body) => {
   try {
     const contactUpdate = await Contact.findById(contactId);
-    return await Contact.findByIdAndUpdate(contactUpdate, { ...body }, { new: true })
+    return await Contact.findByIdAndUpdate(contactUpdate, {...body}, {new: true})
 
   } catch (error) {
     console.error(error.message);
@@ -73,8 +72,8 @@ const updateContact = async (contactId, body) => {
 
 const updateStatusContact = async (contactId, body) => {
   try {
-    const contactUpdate = await Contact.findById(contactId);
-    return await Contact.findByIdAndUpdate(contactUpdate, { ...body }, { new: true })
+      const contactUpdate = await Contact.findById(contactId);
+      return await Contact.findByIdAndUpdate(contactUpdate, {...body}, {new: true})
   } catch (error) {
     console.error(error.message)
   }

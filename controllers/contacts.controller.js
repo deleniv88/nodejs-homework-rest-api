@@ -1,9 +1,8 @@
-
-
-const { listContacts, getContactById, addContact, removeContact, updateContact } = require('../models/contacts')
+const { listContacts, getContactById, addContact, removeContact, updateContact } = require("../models/contacts")
 
 async function getAllContacts(req, res, next) {
-    res.status(200).json(await listContacts())
+    const contacts = await listContacts()
+    res.status(200).json(contacts)
 }
 
 async function getContact(req, res, next) {
