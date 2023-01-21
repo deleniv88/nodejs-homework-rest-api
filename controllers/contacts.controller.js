@@ -1,9 +1,5 @@
 
-const { listContacts, getContactById, addContact, removeContact, updateContact } = require("../models/contacts")
 
-async function getAllContacts(req, res, next) {
-    const contacts = await listContacts()
-    res.status(200).json(contacts)
 const { listContacts, getContactById, addContact, removeContact, updateContact } = require('../models/contacts')
 
 async function getAllContacts(req, res, next) {
@@ -47,7 +43,6 @@ async function updContact(req, res, next) {
             return res.status(200).json({
                 data: newContact,
                 status: "success"
-                data: newContact
             })
         } else {
             res.status(404).json({ message: "Not found" })
@@ -78,6 +73,4 @@ module.exports = {
     deleteContact,
     updContact,
     contactStatus
-}
-    updContact
 }
