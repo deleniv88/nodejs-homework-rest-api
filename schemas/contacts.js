@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const addContactSchema = Joi.object({
     name: Joi.string()
+        .alphanum()
         .min(3)
         .max(30)
         .required(),
@@ -9,4 +10,7 @@ const addContactSchema = Joi.object({
     phone: Joi.string().min(8).required()
 })
 
-module.exports = addContactSchema;
+
+module.exports = {
+    addContactSchema
+};
