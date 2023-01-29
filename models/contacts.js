@@ -15,15 +15,16 @@ const schema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-},{
+}, {
+  timestamps: true,
   versionKey: false
-})
+});
 
-const Contact = mongoose.model("contacts", schema)
+const Contact = mongoose.model("contacts", schema);
 
-const listContacts = async () => {
+const listContacts = async ({ page, limit, favorite }) => {
   try {
-    const dbRaw = await Contact.find({});
+    const dbRaw = await Contact.find({ favorite }).skip(page).limit(limit);
     return dbRaw;
   } catch (error) {
     console.error(error);
@@ -32,7 +33,7 @@ const listContacts = async () => {
 
 const getContactById = async (contactId) => {
   try {
-    const searchById = Contact.findById(contactId)
+    const searchById = Contact.findById(contactId);
     return searchById;
   } catch (error) {
     console.error(error);
@@ -41,8 +42,8 @@ const getContactById = async (contactId) => {
 
 const removeContact = async (contactId) => {
   try {
-    const searchById = await Contact.findById(contactId)
-    await Contact.findByIdAndRemove(searchById)
+    const searchById = await Contact.findById(contactId);
+    await Contact.findByIdAndRemove(searchById);
   } catch (error) {
     console.error();
   }
@@ -50,11 +51,10 @@ const removeContact = async (contactId) => {
 
 const addContact = async (body) => {
   try {
-      const contact = await Contact.create({
-        ...body,
-      })
-      return contact
-
+    const contact = await Contact.create({
+      ...body,
+    })
+    return contact;
   } catch (error) {
     console.error(error);
   }
@@ -63,8 +63,7 @@ const addContact = async (body) => {
 const updateContact = async (contactId, body) => {
   try {
     const contactUpdate = await Contact.findById(contactId);
-    return await Contact.findByIdAndUpdate(contactUpdate, {...body}, {new: true})
-
+    return await Contact.findByIdAndUpdate(contactUpdate, { ...body }, { new: true });
   } catch (error) {
     console.error(error.message);
   }
@@ -72,13 +71,12 @@ const updateContact = async (contactId, body) => {
 
 const updateStatusContact = async (contactId, body) => {
   try {
-      const contactUpdate = await Contact.findById(contactId);
-      return await Contact.findByIdAndUpdate(contactUpdate, {...body}, {new: true})
+    const contactUpdate = await Contact.findById(contactId);
+    return await Contact.findByIdAndUpdate(contactUpdate, { ...body }, { new: true });
   } catch (error) {
     console.error(error.message)
   }
 }
-
 
 module.exports = {
   Contact,
@@ -87,5 +85,5 @@ module.exports = {
   removeContact,
   addContact,
   updateContact,
-  updateStatusContact
+  updateStatusContact,
 }
