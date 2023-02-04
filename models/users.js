@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const schema = mongoose.Schema({
   password: {
     type: String,
@@ -15,11 +16,7 @@ const schema = mongoose.Schema({
     enum: ["starter", "pro", "business"],
     default: "starter"
   },
-  token: String,
-  owner: {
-    type: mongoose.SchemaTypes.ObjectId,
-    ref: 'users',
-  }
+  token: String
 }, {
   timestamps: true,
   versionKey: false,
