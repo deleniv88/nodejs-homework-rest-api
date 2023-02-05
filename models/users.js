@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const schema = mongoose.Schema({
   password: {
     type: String,
@@ -11,16 +10,20 @@ const schema = mongoose.Schema({
     required: [true, 'Email is required'],
     unique: true,
   },
+  avatarURL: {
+    type: String,
+  },
   subscription: {
     type: String,
     enum: ["starter", "pro", "business"],
     default: "starter"
   },
   token: String
-}, {
-  timestamps: true,
-  versionKey: false,
-});
+},
+  {
+    timestamps: true,
+    versionKey: false,
+  });
 
 const User = mongoose.model("users", schema);
 
@@ -35,7 +38,7 @@ const getUserByEmail = async (email) => {
 
 const updateUserSubscription = async (_id, body) => {
   try {
-    const contactUpdate = await User.findById({_id});
+    const contactUpdate = await User.findById({ _id });
     return await User.findByIdAndUpdate(contactUpdate, { ...body }, { new: true });
   } catch (error) {
     console.error(error.message)

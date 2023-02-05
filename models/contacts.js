@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const { mongoose, SchemaTypes } = require("mongoose");
 
 const schema = mongoose.Schema({
   name: {
@@ -15,6 +15,10 @@ const schema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  owner: {
+    type: SchemaTypes.ObjectId,
+    ref: 'users',
+  }
 }, {
   timestamps: true,
   versionKey: false
@@ -22,9 +26,13 @@ const schema = mongoose.Schema({
 
 const Contact = mongoose.model("contacts", schema);
 
-const listContacts = async ({ page, limit, favorite }) => {
+const listContacts = async (usersId, { favorite, page, limit }) => {
   try {
-    const dbRaw = await Contact.find({ favorite }).skip(page).limit(limit);
+    const searchUser = { owner: usersId };
+    const dbRaw = await Contact.find(searchUser)
+      .skip(page)
+      .limit(limit)
+      .populate({ path: "owner" });
     return dbRaw;
   } catch (error) {
     console.error(error);

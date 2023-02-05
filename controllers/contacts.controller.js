@@ -2,11 +2,18 @@ const { listContacts, getContactById, addContact, removeContact, updateContact }
 
 async function getAllContacts(req, res, next) {
     const usersId = req.user;
-    const { page = 1, limit = 10, favorite} = req.query;
+    const { page = 1, limit = 10, favorite } = req.query;
     const skip = (page - 1) * limit;
 
-    const contacts = await listContacts(usersId, {favorite, skip, limit });
-    res.json({ status: 'success', code: 200, data: { ...contacts } });}
+    const contacts = await listContacts(usersId, { favorite, skip, limit });
+    res.json({
+        status: 'success',
+        code: 200,
+        data: {
+            ...contacts
+        }
+    });
+}
 
 async function getContact(req, res, next) {
     const { contactId } = req.params;
@@ -15,15 +22,27 @@ async function getContact(req, res, next) {
     if (contact) {
         return res.status(200).json(contact);
     }
-    return res.status(404).json({ message: 'Not found' });
+    return res.status(404).json({
+        message: 'Not found'
+    });
 }
 
 const createContact = async (req, res, next) => {
     const usersId = req.user._id;
-    const contact = await addContact({ ...req.body, owner: usersId });
-    res.status(201).json({ status: 'success', code: 202, data: { contact } });
-  };
-  
+    const contact = await addContact({
+        ...req.body,
+        owner: usersId
+    });
+
+    res.status(201).json({
+        tatus: 'success',
+        code: 202,
+        data: {
+            contact
+        }
+    });
+};
+
 
 async function deleteContact(req, res, next) {
     const { contactId } = req.params;
@@ -43,7 +62,9 @@ async function updContact(req, res, next) {
 
         if (newContact) {
             return res.status(200).json({
-                data: {...newContact},
+                data: {
+                    ...newContact
+                },
                 status: "success"
             })
         } else {
@@ -65,7 +86,11 @@ async function contactStatus(req, res, next) {
         res.status(400).json({
             message: "Not found",
         });
-    } res.status(200).json({ data: newContact, status: "success" });
+    } 
+    res.status(200).json({
+        data: newContact,
+        status: "success"
+    });
 }
 
 module.exports = {
