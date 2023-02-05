@@ -6,18 +6,26 @@ async function auth(req, res, next) {
     const authHeader = req.headers.authorization || "";
     const [type, token] = authHeader.split(" ");
 
+    if (type !== 'Bearer') {
+        throw Unauthorized("Not authorized");
+    }
+
+    if (!token)  {
+        throw Unauthorized("Not authorized");
+    }
+
     try {
         const { id } = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(id);
         req.user = user;
 
-    if (type !== 'Bearer') {
-        throw Unauthorized("Not authorized");
-    }
+    // if (type !== 'Bearer') {
+    //     throw Unauthorized("Not authorized");
+    // }
 
-    if (!token || !user.token)  {
-        throw Unauthorized("Not authorized");
-    }
+    // if (!token || !user.token)  {
+    //     throw Unauthorized("Not authorized");
+    // }
 
     } catch (error) {
         if (error.name === "TokenExpiredError" || error.name === "JsonWebTokenError") {
