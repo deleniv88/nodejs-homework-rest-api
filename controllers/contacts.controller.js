@@ -1,11 +1,12 @@
 const { listContacts, getContactById, addContact, removeContact, updateContact } = require("../models/contacts");
-
+// show all contacts
 async function getAllContacts(req, res, next) {
     const usersId = req.user;
     const { page = 1, limit = 10, favorite } = req.query;
     const skip = (page - 1) * limit;
 
     const contacts = await listContacts(usersId, { favorite, skip, limit });
+
     res.json({
         status: 'success',
         code: 200,
@@ -14,7 +15,7 @@ async function getAllContacts(req, res, next) {
         }
     });
 }
-
+// get current contact
 async function getContact(req, res, next) {
     const { contactId } = req.params;
     const contact = await getContactById(contactId);
@@ -22,12 +23,13 @@ async function getContact(req, res, next) {
     if (contact) {
         return res.status(200).json(contact);
     }
+
     return res.status(404).json({
         message: 'Not found'
     });
 }
-
-const createContact = async (req, res, next) => {
+// create contact
+async function createContact(req, res, next) {
     const usersId = req.user._id;
     const contact = await addContact({
         ...req.body,
@@ -42,8 +44,7 @@ const createContact = async (req, res, next) => {
         }
     });
 };
-
-
+// delete contact
 async function deleteContact(req, res, next) {
     const { contactId } = req.params;
     const contact = await getContactById(contactId);
@@ -51,12 +52,12 @@ async function deleteContact(req, res, next) {
     if (!contact) {
         return next(res.status(404).json({ message: "Not found" }));
     }
+
     await removeContact(contactId);
     return res.status(200).json({ message: "contact deleted" });
 }
-
+// update contact
 async function updContact(req, res, next) {
-
     if (req.body) {
         const newContact = await updateContact(req.params.contactId, req.body);
 
@@ -66,13 +67,13 @@ async function updContact(req, res, next) {
                     ...newContact
                 },
                 status: "success"
-            })
+            });
         } else {
             res.status(404).json({ message: "Not found" });
         }
     }
 }
-
+// update contact status
 async function contactStatus(req, res, next) {
     if (!Object.keys(req.body).length) {
         return res.status(400).json({
@@ -86,7 +87,8 @@ async function contactStatus(req, res, next) {
         res.status(400).json({
             message: "Not found",
         });
-    } 
+    }
+
     res.status(200).json({
         data: newContact,
         status: "success"

@@ -25,7 +25,7 @@ const schema = mongoose.Schema({
 });
 
 const Contact = mongoose.model("contacts", schema);
-
+// for showing up all contact of user
 const listContacts = async (usersId, { favorite, page, limit }) => {
   try {
     const searchUser = { owner: usersId };
@@ -38,7 +38,7 @@ const listContacts = async (usersId, { favorite, page, limit }) => {
     console.error(error);
   }
 }
-
+// gets contact by ID
 const getContactById = async (contactId) => {
   try {
     const searchById = Contact.findById(contactId);
@@ -47,7 +47,7 @@ const getContactById = async (contactId) => {
     console.error(error);
   }
 }
-
+// remove contact by ID
 const removeContact = async (contactId) => {
   try {
     const searchById = await Contact.findById(contactId);
@@ -56,7 +56,7 @@ const removeContact = async (contactId) => {
     console.error();
   }
 }
-
+// add new contact
 const addContact = async (body) => {
   try {
     const contact = await Contact.create({
@@ -67,7 +67,7 @@ const addContact = async (body) => {
     console.error(error);
   }
 }
-
+// update contact
 const updateContact = async (contactId, body) => {
   try {
     const contactUpdate = await Contact.findById(contactId);
@@ -76,7 +76,7 @@ const updateContact = async (contactId, body) => {
     console.error(error.message);
   }
 }
-
+// update contact status
 const updateStatusContact = async (contactId, body) => {
   try {
     const contactUpdate = await Contact.findById(contactId);
